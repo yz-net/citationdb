@@ -13,7 +13,9 @@
     "format:check": "prettier --check .",
     "data:download": "node ./src/airtable/download_airtable.cjs",
     "data:convert": "node ./src/airtable/convert_airtable_data.cjs",
-    "prebuild": "npm run data:download && npm run data:convert"
+    "prebuild": "npm run data:download && npm run data:convert",
+    "ci:trigger-staging": "node ./src/airtable/trigger_staging_build.mjs",
+    "ci:trigger-production": "node ./src/airtable/trigger_production_build.mjs"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.1",
