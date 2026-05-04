@@ -77,5 +77,5 @@ export default class D3Component extends PureComponent {
   initializeChart() {}
 
   // Override this
-  updateChart(data) {}
+  updateChart(_data) {}
 }

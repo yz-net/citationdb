@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 import BigNumber from "~/components/BigNumber";
 import BreadCrumb from "~/components/BreadCrumb";
@@ -13,24 +13,8 @@ import { authors, publications, resources } from "~/utils/data";
 export default function Pins() {
   const localData = useLocalDataStore();
 
-  const [pinnedData, setPinnedData] = useState<{
-    authors: any[];
-    publications: any[];
-    resources: any[];
-  }>({
-    authors: authors.filter((a) =>
-      localData.authorIDsPinned.some((id) => id === a.id),
-    ),
-    publications: publications.filter((p) =>
-      localData.publicationIDsPinned.some((id) => id === p.id),
-    ),
-    resources: resources.filter((r) =>
-      localData.resourceIDsPinned.some((id) => id === r.id),
-    ),
-  });
-
-  useEffect(() => {
-    setPinnedData({
+  const pinnedData = useMemo(
+    () => ({
       authors: authors.filter((a) =>
         localData.authorIDsPinned.some((id) => id === a.id),
       ),
@@ -40,12 +24,13 @@ export default function Pins() {
       resources: resources.filter((r) =>
         localData.resourceIDsPinned.some((id) => id === r.id),
       ),
-    });
-  }, [
-    localData.authorIDsPinned,
-    localData.publicationIDsPinned,
-    localData.resourceIDsPinned,
-  ]);
+    }),
+    [
+      localData.authorIDsPinned,
+      localData.publicationIDsPinned,
+      localData.resourceIDsPinned,
+    ],
+  );
 
   return (
     <>
@@ -54,7 +39,7 @@ export default function Pins() {
           <BreadCrumb />
           <section className="mt-7 md:flex">
             <div className="md:flex[2_1] m-5 md:mx-2">
-              <h1 className="m-0 p-0 font-yalenewroman text-xl font-normal">
+              <h1 className="font-yalenewroman m-0 p-0 text-xl font-normal">
                 Your pinned items
               </h1>
               <p>

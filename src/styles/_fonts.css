@@ -13,6 +13,3 @@
   font-display: swap;
   src: url("../../public/fonts/ProximaNova-Reg.ttf") format("ttf");
 }
-
-$font-serif: "yalenewroman";
-$font-sans: proxima-nova, sans-serif, arial;

@@ -62,7 +62,7 @@ export default async function ResourcesPage({
 
           <div className="view-button-container">
             <Link
-              className="flex h-[30px] w-fit items-center justify-center rounded-lg bg-[#0d99aa] px-2.5 text-sm font-bold text-white hover:shadow-yale"
+              className="hover:shadow-yale flex h-[30px] w-fit items-center justify-center rounded-lg bg-[#0d99aa] px-2.5 text-sm font-bold text-white"
               href={getResourceLink(resource)}
               type="button"
             >

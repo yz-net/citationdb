@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-yalenewroman: "yalenewroman";
+  --font-proximanova: "proximanova";
+
+  --shadow-yale: 1px 1px 6px rgba(0, 0, 0, 0.16);
+}
+
+@import "./_fonts.css";
+@import "./_layout.css";
+@import "./_viz.css";

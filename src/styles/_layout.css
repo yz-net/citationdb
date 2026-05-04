@@ -9,63 +9,49 @@
 
 .module-area {
   margin-top: 30px;
-}
-
-.module-area {
   margin-right: 80px;
   margin-left: 80px;
 
   display: grid;
-
   grid-gap: 16px;
 
   grid-template-rows: 20px 180px 90px repeat(6, 80px);
-
   grid-template-columns: minmax(280px, 280px) repeat(3, 1fr) 280px;
 
   grid-template-areas:
-    // -- 1x20px
-
     "textmenu   textmenu    textmenu    textmenu textmenu"
-    // -- 1x180px
     "gender     birthyear   birthyear   birthyear interviewers"
-    // -- 1x90px
     "languages  birthyear   birthyear   birthyear interviewers"
-    // --- 6x90px
     "languages  birthplaces birthplaces  programs  programs"
     "languages  birthplaces birthplaces  programs  programs"
     "languages  birthplaces birthplaces  programs  programs"
     "languages  birthplaces birthplaces  programs  programs"
     "languages  birthplaces birthplaces  programs  programs"
     "languages  birthplaces birthplaces  programs  programs";
-  .text-menu {
-    grid-area: textmenu; //-start / textmenu-start / textmenu-end / textmenu-end;
+
+  & .text-menu {
+    grid-area: textmenu;
   }
-  .tagfilter-collection {
+  & .tagfilter-collection {
     display: flex;
   }
-
-  .Gender {
-    grid-area: gender; //-start / gender-start / gender-end / gender-end;
+  & .Gender {
+    grid-area: gender;
   }
-  .Languages {
-    grid-area: languages; //-start / languages-start / languages-end / languages-end;
+  & .Languages {
+    grid-area: languages;
   }
-
-  .Interviewers {
+  & .Interviewers {
     grid-area: interviewers;
   }
-
-  .BirthPlaces {
-    grid-area: birthplaces; //-start / birthplaces-start / birthplaces-end / birthplaces-end;
+  & .BirthPlaces {
+    grid-area: birthplaces;
   }
-
-  .BirthYear {
-    grid-area: birthyear; //-start / birthyear-start / birthyear-end / birthyear-end;
+  & .BirthYear {
+    grid-area: birthyear;
   }
-
-  .Programs {
-    grid-area: programs; //-start / programs-start / programs-end /programs-end;
+  & .Programs {
+    grid-area: programs;
   }
 }
 

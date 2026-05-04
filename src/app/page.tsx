@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 import PublicationHistogram from "~/components/PublicationHistogram";
 import BigNumber from "~/components/BigNumber";
@@ -17,17 +17,7 @@ export default function HomePage() {
     resource: boolean;
     publication: boolean;
     author: boolean;
-  }>({ resource: false, publication: false, author: false });
-  const [items, setItems] = useState<object[]>([]);
-  const [counts, setCounts] = useState<{
-    resource: number;
-    publication: number;
-    author: number;
-  }>({
-    resource: 0,
-    publication: 0,
-    author: 0,
-  });
+  }>({ resource: true, publication: true, author: true });
 
   const toggleFactory = (label: "resource" | "publication" | "author") => {
     return () => {
@@ -35,14 +25,10 @@ export default function HomePage() {
     };
   };
 
-  useEffect(() => {
-    setToggles({ resource: true, publication: true, author: true });
-  }, []);
-
-  useEffect(() => {
-    let filteredAuthors = [];
-    let filteredPublications = [];
-    let filteredResources = [];
+  const { items, counts } = useMemo(() => {
+    let filteredAuthors: any[] = [];
+    let filteredPublications: any[] = [];
+    let filteredResources: any[] = [];
     const trimmedSearchTerm = searchTerm.trim().toLowerCase();
     if (toggles.author) {
       filteredAuthors = authors.filter((a) =>
@@ -59,26 +45,24 @@ export default function HomePage() {
         r.__header?.toLowerCase().includes(trimmedSearchTerm),
       );
     }
-    setItems(
-      [...filteredAuthors, ...filteredPublications, ...filteredResources].sort(
-        (a, b) => (a.__header > b.__header ? 1 : -1),
-      ),
-    );
-    setCounts({
-      resource: filteredResources.length,
-      author: filteredAuthors.length,
-      publication: filteredPublications.length,
-    });
+    return {
+      items: [
+        ...filteredAuthors,
+        ...filteredPublications,
+        ...filteredResources,
+      ].sort((a, b) => (a.__header > b.__header ? 1 : -1)),
+      counts: {
+        resource: filteredResources.length,
+        author: filteredAuthors.length,
+        publication: filteredPublications.length,
+      },
+    };
   }, [searchTerm, toggles]);
-
-  if (!items || !counts) {
-    return;
-  }
 
   return (
     <>
       <TopWrapper id={null} saveType="unknown">
-        <div className="mx-4 mb-9 mt-4 flex-[2_1] md:mx-2.5">
+        <div className="mx-4 mt-4 mb-9 flex-[2_1] md:mx-2.5">
           <PublicationHistogram items={items} />
         </div>
         <div className="flex max-w-none justify-center md:max-w-[350px] md:justify-end">

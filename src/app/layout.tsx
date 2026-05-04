@@ -2,7 +2,7 @@ import { GeistSans } from "geist/font/sans";
 
 import SiteBanner from "~/components/SiteBanner";
 
-import "~/styles/globals.scss";
+import "~/styles/globals.css";
 
 export const metadata = {
   title: "CitationDB - Fortunoff Video Archive for Holocaust Testimonies",

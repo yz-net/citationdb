@@ -17,7 +17,7 @@ import {
 
 function PillTray(props: any) {
   return (
-    <div className="grid grid-rows-[0fr] transition-[grid-template-rows] delay-0 duration-250 ease-in-out group-hover:delay-75 group-hover:grid-rows-[1fr]">
+    <div className="grid grid-rows-[0fr] transition-[grid-template-rows] delay-0 duration-250 ease-in-out group-hover:grid-rows-[1fr] group-hover:delay-75">
       <div className="flex min-h-[24px] max-w-full flex-wrap items-start overflow-hidden">
         <div className="mr-0.5 text-[13px] font-light">
           {props.items.length} {props.title}
@@ -27,7 +27,7 @@ function PillTray(props: any) {
             key={i}
             href={item.link}
             type="button"
-            className="mx-1 mt-1 max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap rounded-sm border-l-[3px] bg-[#f5f5f5] px-1 text-[11px] text-[#286dc0] transition-[border,max-width] hover:text-[#00356b] group-hover:max-w-full"
+            className="mx-1 mt-1 max-w-[100px] overflow-hidden rounded-sm border-l-[3px] border-l-gray-200 bg-[#f5f5f5] px-1 text-[11px] text-ellipsis whitespace-nowrap text-[#286dc0] transition-[border,max-width] group-hover:max-w-full hover:text-[#00356b]"
           >
             {item.title}
           </Link>
@@ -242,11 +242,19 @@ export default function ResultListItem(props: any) {
   return (
     <div
       className={twMerge(
-        "group relative mb-4 flex items-center overflow-hidden rounded-lg border-l-[10px] border-opacity-50 bg-white pr-4 transition-[border] hover:max-w-full hover:border-l-[20px] hover:border-opacity-100 hover:shadow-yale",
-        props.type === "author" ? "border-l-[#ca6251]" : "",
-        props.type === "publication" ? "border-l-[#0d99aa]" : "",
-        props.type === "resource" ? "border-l-[#f9be00]" : "",
-        props.type === "footnote" ? "border-l-[#f9be00]" : "",
+        "group hover:shadow-yale relative mb-4 flex items-center overflow-hidden rounded-lg border-l-[10px] bg-white pr-4 transition-[border] hover:max-w-full hover:border-l-[20px]",
+        props.type === "author"
+          ? "border-l-[#ca6251]/50 hover:border-l-[#ca6251]"
+          : "",
+        props.type === "publication"
+          ? "border-l-[#0d99aa]/50 hover:border-l-[#0d99aa]"
+          : "",
+        props.type === "resource"
+          ? "border-l-[#f9be00]/50 hover:border-l-[#f9be00]"
+          : "",
+        props.type === "footnote"
+          ? "border-l-[#f9be00]/50 hover:border-l-[#f9be00]"
+          : "",
       )}
     >
       <div className="w-full p-3.5">

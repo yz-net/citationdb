@@ -1,9 +1,0 @@
-rect {
-  fill: #8ec8cc;
-  cursor: pointer;
-}
-
-rect.highlighted,
-rect:hover {
-  fill: #0d99aa;
-}

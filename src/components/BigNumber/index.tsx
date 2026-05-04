@@ -7,7 +7,7 @@ export default function BigNumber(props: any) {
     <div className="ml-2 text-[#6e6e6e]">
       <div
         className={twMerge(
-          "flex content-center items-center justify-center rounded-lg border-2 bg-[#f5f5f5] p-5 text-xl font-semibold min-w-[7ch] tabular-nums",
+          "flex min-w-[7ch] content-center items-center justify-center rounded-lg border-2 bg-[#f5f5f5] p-5 text-xl font-semibold tabular-nums",
           props.className,
         )}
       >

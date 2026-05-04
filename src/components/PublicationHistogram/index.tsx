@@ -21,7 +21,7 @@ export default function PublicationsHistogram(props: any) {
           bottom: 40,
         }}
       />
-      <h6 className="absolute bottom-0 left-0 right-0 text-center text-xs font-bold text-[#222]">
+      <h6 className="absolute right-0 bottom-0 left-0 text-center text-xs font-bold text-[#222]">
         Publications by year
       </h6>
     </div>

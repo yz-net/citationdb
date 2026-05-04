@@ -20,7 +20,8 @@ export default class Histogram extends D3Component {
     this.xAxisG = svg.append("g").classed("axis", true).classed("x", true);
     this.yAxisG = svg.append("g").classed("axis", true).classed("y", true);
     this.barG = svg.append("g");
-    this.noDataText = svg.append("text")
+    this.noDataText = svg
+      .append("text")
       .classed("no-data-text", true)
       .attr("text-anchor", "middle")
       .style("font-size", "20px")
@@ -35,8 +36,8 @@ export default class Histogram extends D3Component {
 
     // get width and height
     const width = svg.node()?.getBoundingClientRect()?.width ?? 0;
-    const height = this.props.height ??
-      svg.node().getBoundingClientRect().height;
+    const height =
+      this.props.height ?? svg.node().getBoundingClientRect().height;
 
     const yearRange = [this.props.minYear, this.props.maxYear];
     const countRange = [0, d3.max(data?.map((x) => x.count)) ?? 1];
@@ -52,9 +53,8 @@ export default class Histogram extends D3Component {
 
     // Always show first and last data years;
     // fill in between with years landing on multiples of 5
-    const dataYears = data && data.length > 0
-      ? data.map((d) => d.label)
-      : [this.props.minYear];
+    const dataYears =
+      data && data.length > 0 ? data.map((d) => d.label) : [this.props.minYear];
     const firstDataYear = Math.min(...dataYears);
     const lastDataYear = Math.max(...dataYears);
 
@@ -65,9 +65,15 @@ export default class Histogram extends D3Component {
     // Generate intermediate ticks, dropping any too close to the endpoints
     const minGap = tickStep * 0.6;
     const firstMultiple = Math.ceil(firstDataYear / tickStep) * tickStep;
-    const intermediateTicks = d3.range(firstMultiple, lastDataYear + 1, tickStep)
-      .filter((y) => y !== firstDataYear && y !== lastDataYear
-        && (y - firstDataYear) >= minGap && (lastDataYear - y) >= minGap);
+    const intermediateTicks = d3
+      .range(firstMultiple, lastDataYear + 1, tickStep)
+      .filter(
+        (y) =>
+          y !== firstDataYear &&
+          y !== lastDataYear &&
+          y - firstDataYear >= minGap &&
+          lastDataYear - y >= minGap,
+      );
 
     const tickValues = [firstDataYear, ...intermediateTicks, lastDataYear];
 
@@ -98,20 +104,20 @@ export default class Histogram extends D3Component {
       .transition(ty)
       .call(yAxis);
 
-    const t = (i) => svg.transition().duration(1000).ease(d3.easeCubic);
+    const t = (_i) => svg.transition().duration(1000).ease(d3.easeCubic);
 
     this.barG
       .selectAll(".bar")
       .data(data)
       .join(
-        (enter, i) =>
+        (enter, _i) =>
           enter
             .append("rect")
             .attr("class", (d) => d.barClass)
             .classed("bar", true)
             .attr("data-enter-value", (d) => d.count)
             .attr("data-label", (d) => d.label)
-            .attr("y", (d) => yScale(0))
+            .attr("y", (_d) => yScale(0))
             .attr("width", xScale.bandwidth)
             .attr("x", (d) => xScale(d.label))
             .call((enter) =>
@@ -119,7 +125,7 @@ export default class Histogram extends D3Component {
                 .transition(null)
                 .attr("y", (d) => yScale(d.count ?? 0))
                 .attr("height", (d) => yScale(0) - yScale(d.count ?? 0))
-                .attr("width", xScale.bandwidth)
+                .attr("width", xScale.bandwidth),
             ),
         (update) =>
           update
@@ -131,7 +137,7 @@ export default class Histogram extends D3Component {
               update
                 .transition(t(1000))
                 .attr("y", (d) => yScale(d.count ?? 0))
-                .attr("height", (d) => yScale(0) - yScale(d.count ?? 0))
+                .attr("height", (d) => yScale(0) - yScale(d.count ?? 0)),
             ),
         (exit) =>
           exit
@@ -141,7 +147,7 @@ export default class Histogram extends D3Component {
               exit
                 .transition(t(100))
                 .attr("height", 0)
-                .attr("y", () => yScale(0))
+                .attr("y", () => yScale(0)),
             ),
       );
 

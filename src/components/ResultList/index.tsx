@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { footnotes, publications } from "~/utils/data";
 
@@ -18,9 +18,9 @@ function buildSortYearMap() {
   const publicationYearById = new Map<string, number>();
   const authorYears = new Map<string, number[]>();
   for (const p of publications) {
-    const year = Number((p as any).date) || 0;
+    const year = Number((p).date) || 0;
     publicationYearById.set(p.id, year);
-    for (const aid of (p as any)["author.id"] ?? []) {
+    for (const aid of (p)["author.id"] ?? []) {
       const arr = authorYears.get(aid) ?? [];
       arr.push(year);
       authorYears.set(aid, arr);
@@ -28,8 +28,8 @@ function buildSortYearMap() {
   }
   const resourceYears = new Map<string, number[]>();
   for (const f of footnotes) {
-    const pid = (f as any)["publication.id"];
-    const rid = (f as any)["resource.id"];
+    const pid = (f)["publication.id"];
+    const rid = (f)["resource.id"];
     const year = publicationYearById.get(pid) ?? 0;
     const arr = resourceYears.get(rid) ?? [];
     arr.push(year);
@@ -59,10 +59,15 @@ export default function ResultsList(props: any) {
     itemCount: 25,
     step: 10,
   });
-
-  useEffect(() => {
+  const [prevItems, setPrevItems] = useState(props.items);
+  if (prevItems !== props.items) {
+    setPrevItems(props.items);
     setOptions((prev) => ({ ...prev, itemCount: 25 }));
-  }, [props.items]);
+  }
+
+  const loadMore = useCallback(() => {
+    setOptions((prev) => ({ ...prev, itemCount: prev.itemCount + prev.step }));
+  }, []);
 
   useEffect(() => {
     const trackScrolling = () => {
@@ -77,14 +82,9 @@ export default function ResultsList(props: any) {
     return () => {
       document.removeEventListener("scroll", trackScrolling);
     };
-  }, [options.itemCount, props.items.length]);
+  }, [options.itemCount, props.items.length, loadMore]);
 
-  const loadMore = () => {
-    const itemCount = options.itemCount + options.step;
-    setOptions((prev) => ({ ...prev, itemCount }));
-  };
-
-  const sortMaps = useMemo(buildSortYearMap, []);
+  const sortMaps = useMemo(() => buildSortYearMap(), []);
   const hasPublications = props.items.some(
     (x: any) => x.__type === "publication",
   );

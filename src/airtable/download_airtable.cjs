@@ -31,14 +31,10 @@ const fieldMappings = {
   Footnote: "Footnote",
   Footnotes: "Footnote",
   has(obj) {
-    return Object.keys(this).some(
-      (key) => Object.keys(obj).includes(key),
-    );
+    return Object.keys(this).some((key) => Object.keys(obj).includes(key));
   },
   recordsToBeConverted(obj) {
-    return Object.keys(this).filter(
-      (key) => Object.keys(obj).includes(key),
-    );
+    return Object.keys(this).filter((key) => Object.keys(obj).includes(key));
   },
 };
 async function downloadAllTables() {

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import useLocalDataStore from "~/store/local";
@@ -8,35 +7,26 @@ import Button from "../Button";
 
 export default function SaveButton(props: any) {
   const localData = useLocalDataStore();
-  const [alreadySaved, setAlreadySaved] = useState<boolean>(false);
-
-  useEffect(() => {
-    let pinnedArray;
-    switch (props.type) {
-      case "author":
-        pinnedArray = localData.authorIDsPinned;
-        break;
-      case "publication":
-        pinnedArray = localData.publicationIDsPinned;
-        break;
-      case "resource":
-        pinnedArray = localData.resourceIDsPinned;
-        break;
-    }
-    if (pinnedArray) {
-      setAlreadySaved(pinnedArray.some((id) => id === props.id));
-    }
-  }, [
-    localData.authorIDsPinned,
-    localData.publicationIDsPinned,
-    localData.resourceIDsPinned,
-  ]);
 
   if (
     !["publication", "author", "resource"].some((type) => type === props.type)
   ) {
     return;
   }
+
+  let pinnedArray: string[] | undefined;
+  switch (props.type) {
+    case "author":
+      pinnedArray = localData.authorIDsPinned;
+      break;
+    case "publication":
+      pinnedArray = localData.publicationIDsPinned;
+      break;
+    case "resource":
+      pinnedArray = localData.resourceIDsPinned;
+      break;
+  }
+  const alreadySaved = pinnedArray?.some((id) => id === props.id) ?? false;
 
   const handleClick = () => {
     switch (props.type) {
