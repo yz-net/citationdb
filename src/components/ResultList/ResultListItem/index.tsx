@@ -17,8 +17,8 @@ import {
 
 function PillTray(props: any) {
   return (
-    <div className="flex flex-wrap">
-      <div className="flex max-w-full flex-wrap items-center">
+    <div className="grid grid-rows-[0fr] transition-[grid-template-rows] delay-0 duration-250 ease-in-out group-hover:delay-75 group-hover:grid-rows-[1fr]">
+      <div className="flex min-h-[24px] max-w-full flex-wrap items-start overflow-hidden">
         <div className="mr-0.5 text-[13px] font-light">
           {props.items.length} {props.title}
         </div>
