@@ -57,12 +57,12 @@ export default async function ResourcesPage({
     <div className="ResourcePage">
       <TopWrapper id={resourcesId} saveType="resource">
         <div className="flex w-full flex-wrap items-start justify-center gap-x-2 gap-y-2">
-          <h1 className="font-yalenewroman mx-5 w-full text-2xl md:mx-2.5">
-            {resource.title}
-          </h1>
-          <div className="mx-5 flex-1 basis-full md:mx-2.5 lg:basis-0">
+          <div className="mx-5 flex-1 basis-[max-content] md:mx-2.5">
+            <h1 className="font-yalenewroman w-full text-2xl">
+              {resource.title}
+            </h1>
             <Link
-              className="group hover:shadow-yale shadow-yale/10 flex h-[30px] w-fit items-stretch overflow-hidden rounded-lg bg-white"
+              className="group mt-3 hover:shadow-yale shadow-yale/10 flex h-[30px] w-fit items-stretch overflow-hidden rounded-lg bg-white"
               href={getResourceLink(resource)}
               type="button"
             >
@@ -76,7 +76,7 @@ export default async function ResourcesPage({
               </span>
             </Link>
 
-            <div className="my-4">
+            <div className="my-4 [contain:inline-size]">
               <p>
                 This testimony has been cited{" "}
                 <span className="font-bold">
@@ -94,15 +94,15 @@ export default async function ResourcesPage({
               </p>
             </div>
           </div>
-          {filteredPublications.length >= 2 && (
-            <figure className="mx-2.5 w-[260px] flex-none">
-              <PublicationHistogram items={filteredPublications} />
-              <figcaption className="text-center text-xs font-bold text-[#222]">
-                Publications by year
-              </figcaption>
-            </figure>
-          )}
-          <div className="mx-2.5 flex w-fit flex-none justify-center pt-8">
+          {/* {filteredPublications.length >= 2 && ( */}
+          {/*   <figure className="mx-2.5 w-[260px] flex-none"> */}
+          {/*     <PublicationHistogram items={filteredPublications} /> */}
+          {/*     <figcaption className="text-center text-xs font-bold text-[#222]"> */}
+          {/*       Publications by year */}
+          {/*     </figcaption> */}
+          {/*   </figure> */}
+          {/* )} */}
+          <div className="mx-2.5 flex w-fit flex-none justify-center">
             <BigNumber
               className="border-[#f48734]"
               label={filteredFootnotes.length === 1 ? "citation" : "citations"}

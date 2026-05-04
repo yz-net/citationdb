@@ -60,10 +60,10 @@ export default async function PublicationsPage({
     <>
       <TopWrapper id={publicationsId} saveType="publication">
         <div className="flex w-full flex-wrap items-start justify-center gap-x-2">
-          <h1 className="font-yalenewroman mx-5 w-full text-2xl md:mx-2.5">
-            {publication.title}
-          </h1>
-          <div className="mx-5 flex-1 basis-full md:mx-2.5 lg:basis-0">
+          <div className="mx-5 flex-1 basis-[max-content] md:mx-2.5">
+            <h1 className="font-yalenewroman w-full text-2xl">
+              {publication.title}
+            </h1>
             <div>
               {filteredAuthors?.map((author: any, i: number) => (
                 <span key={i}>
@@ -91,7 +91,7 @@ export default async function PublicationsPage({
               </a>
             )}
 
-            <div className="my-4">
+            <div className="my-4 [contain:inline-size]">
               <p>
                 This publication cites{" "}
                 <span className="font-bold">

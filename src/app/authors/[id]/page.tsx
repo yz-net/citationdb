@@ -60,10 +60,10 @@ export default async function AuthorsPage({
     <div className="PublicationPage">
       <TopWrapper id={author.id} saveType="author">
         <div className="flex w-full flex-wrap items-start justify-center gap-x-2">
-          <h1 className="font-yalenewroman mx-5 w-full text-2xl md:mx-2.5">
-            {author.name}
-          </h1>
-          <div className="mx-5 flex-1 basis-full md:mx-2.5 lg:basis-0">
+          <div className="mx-5 flex-1 basis-[max-content] md:mx-2.5">
+            <h1 className="font-yalenewroman w-full text-2xl">
+              {author.name}
+            </h1>
             {author.uri?.length > 0 && (
               <a
                 className="text-[#286dc0] no-underline hover:text-[#00356b]"
@@ -72,7 +72,7 @@ export default async function AuthorsPage({
                 Author website
               </a>
             )}
-            <div className="my-4">
+            <div className="my-4 [contain:inline-size]">
               <p>
                 This author has made{" "}
                 <span className="font-bold">
