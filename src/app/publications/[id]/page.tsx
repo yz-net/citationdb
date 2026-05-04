@@ -59,7 +59,7 @@ export default async function PublicationsPage({
   return (
     <>
       <TopWrapper id={publicationsId} saveType="publication">
-        <div className="m-5 md:mx-2.5 md:flex-[2_1]">
+        <div className="mx-5 md:mx-2.5 md:flex-[2_1]">
           <h1 className="font-yalenewroman text-2xl">{publication.title}</h1>
           <div>
             {filteredAuthors?.map((author: any, i: number) => (

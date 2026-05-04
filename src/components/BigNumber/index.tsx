@@ -13,7 +13,7 @@ export default function BigNumber(props: any) {
       >
         {props.value}
       </div>
-      <div className="text-center font-sans text-xs text-[#6e6e6e]">
+      <div className="text-center mt-0.5 font-sans text-xs text-[#6e6e6e]">
         {pluralize(props.label, props.value)}
       </div>
     </div>

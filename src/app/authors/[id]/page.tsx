@@ -59,7 +59,7 @@ export default async function AuthorsPage({
   return (
     <div className="PublicationPage">
       <TopWrapper id={author.id} saveType="author">
-        <div className="m-5 md:mx-2.5 md:my-0 md:flex-[2_1]">
+        <div className="mx-5 md:mx-2.5 md:flex-[2_1]">
           <div>
             <h1 className="font-yalenewroman text-2xl">{author.name}</h1>
             {author.uri?.length > 0 && (

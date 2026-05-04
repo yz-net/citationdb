@@ -56,7 +56,7 @@ export default async function ResourcesPage({
   return (
     <div className="ResourcePage">
       <TopWrapper id={resourcesId} saveType="resource">
-        <div className="m-5 md:mx-2.5 md:flex-[2_1]">
+        <div className="mx-5 md:mx-2.5 md:flex-[2_1]">
           <h1 className="font-yalenewroman text-2xl">{resource.title}</h1>
           <div className="mt-3 font-bold text-[#222]">{resource.id}</div>
 
@@ -88,9 +88,12 @@ export default async function ResourcesPage({
             </p>
           </div>
         </div>
-        <div className="md:max-w-[350px]">
+        <div className="grid justify-end gap-x-2 md:max-w-[560px] md:grid-cols-[260px_auto] md:items-center md:self-end">
           <PublicationHistogram items={filteredPublications} />
-          <div className="mt-2 flex justify-end">
+          <p className="text-center text-xs font-bold text-[#222]">
+            Publications by year
+          </p>
+          <div className="flex md:col-start-2 md:row-start-1">
             <BigNumber
               className="border-[#f48734]"
               label={filteredFootnotes.length === 1 ? "citation" : "citations"}

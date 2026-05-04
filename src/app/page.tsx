@@ -62,10 +62,13 @@ export default function HomePage() {
   return (
     <>
       <TopWrapper id={null} saveType="unknown">
-        <div className="mx-4 mt-4 mb-9 flex-[2_1] md:mx-2.5">
+        <figure className="mx-4 flex-[2_1] md:mx-2.5">
           <PublicationHistogram items={items} />
-        </div>
-        <div className="flex max-w-none justify-center md:max-w-[350px] md:justify-end">
+          <figcaption className="text-center text-xs font-bold text-[#222]">
+            Publications by year
+          </figcaption>
+        </figure>
+        <div className="flex max-w-none justify-center md:max-w-[350px] md:justify-end md:self-center">
           <BigNumber
             className="border-[#f9be00]"
             label="testimonies"

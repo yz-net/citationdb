@@ -37,14 +37,14 @@ export default function Pins() {
       <div className="w-full bg-white px-2.5 py-10">
         <div className="relative mx-auto w-4/5 max-w-[1200px]">
           <BreadCrumb />
-          <section className="mt-7 md:flex">
-            <div className="md:flex[2_1] m-5 md:mx-2">
+          <section className="mt-3.5 flex flex-col gap-y-5 md:flex-row">
+            <div className="md:flex[2_1] mx-5 md:mx-2">
               <h1 className="font-yalenewroman m-0 p-0 text-xl font-normal">
                 Your pinned items
               </h1>
-              <p>
-                These items are stored temporarily in your browser. They will
-                not be saved after you close the browser window or tab.
+              <p className="mt-2 text-sm text-gray-500">
+                These items are stored in your browser only. They won&apos;t
+                sync across devices and may be lost if you clear site data.
               </p>
             </div>
             <div className="md:max-w-[350px]">
