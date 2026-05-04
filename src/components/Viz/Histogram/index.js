@@ -50,12 +50,26 @@ export default class Histogram extends D3Component {
       .padding(0.5)
       .rangeRound([margin.left, width - margin.right]);
 
-    const tickSteps = width > 600 ? 10 : 40;
-    const tickValues = d3.range(
-      this.props.minYear,
-      this.props.maxYear,
-      tickSteps,
-    );
+    // Always show first and last data years;
+    // fill in between with years landing on multiples of 5
+    const dataYears = data && data.length > 0
+      ? data.map((d) => d.label)
+      : [this.props.minYear];
+    const firstDataYear = Math.min(...dataYears);
+    const lastDataYear = Math.max(...dataYears);
+
+    // Pick tick step based on available width to avoid overlapping labels
+    const chartWidth = width - margin.left - margin.right;
+    const tickStep = chartWidth > 400 ? 5 : chartWidth > 200 ? 10 : 20;
+
+    // Generate intermediate ticks, dropping any too close to the endpoints
+    const minGap = tickStep * 0.6;
+    const firstMultiple = Math.ceil(firstDataYear / tickStep) * tickStep;
+    const intermediateTicks = d3.range(firstMultiple, lastDataYear + 1, tickStep)
+      .filter((y) => y !== firstDataYear && y !== lastDataYear
+        && (y - firstDataYear) >= minGap && (lastDataYear - y) >= minGap);
+
+    const tickValues = [firstDataYear, ...intermediateTicks, lastDataYear];
 
     const xAxis = d3
       .axisBottom(xScale)
