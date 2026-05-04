@@ -59,53 +59,55 @@ export default async function PublicationsPage({
   return (
     <>
       <TopWrapper id={publicationsId} saveType="publication">
-        <div className="mx-5 md:mx-2.5 md:flex-[2_1]">
-          <h1 className="font-yalenewroman text-2xl">{publication.title}</h1>
-          <div>
-            {filteredAuthors?.map((author: any, i: number) => (
-              <span key={i}>
-                <Link
-                  className="font-bold text-[#222] underline hover:text-[#00356b]"
-                  href={`/authors/${author.id}`}
-                  type="button"
-                >
-                  {author.name ?? ""}
-                </Link>
-                {"; "}
-              </span>
-            ))}
-            <span className="font-bold">{publication.publisher ?? ""}</span>
-            <span>{publication.date ?? ""}</span>
-          </div>
-          {publication.uri && (
-            <a
-              className="text-[#222] underline hover:text-[#00356b]"
-              rel="noopener noreferrer"
-              target="_blank"
-              href={publication.uri}
-            >
-              Publication page
-            </a>
-          )}
+        <div className="flex w-full flex-wrap items-start justify-center gap-x-2">
+          <h1 className="font-yalenewroman mx-5 w-full text-2xl md:mx-2.5">
+            {publication.title}
+          </h1>
+          <div className="mx-5 flex-1 basis-full md:mx-2.5 lg:basis-0">
+            <div>
+              {filteredAuthors?.map((author: any, i: number) => (
+                <span key={i}>
+                  <Link
+                    className="font-bold text-[#222] underline hover:text-[#00356b]"
+                    href={`/authors/${author.id}`}
+                    type="button"
+                  >
+                    {author.name ?? ""}
+                  </Link>
+                  {"; "}
+                </span>
+              ))}
+              <span className="font-bold">{publication.publisher ?? ""}</span>
+              <span>{publication.date ?? ""}</span>
+            </div>
+            {publication.uri && (
+              <a
+                className="text-[#222] underline hover:text-[#00356b]"
+                rel="noopener noreferrer"
+                target="_blank"
+                href={publication.uri}
+              >
+                Publication page
+              </a>
+            )}
 
-          <div className="my-4">
-            <p>
-              This publication cites{" "}
-              <span className="font-bold">
-                {uniqueResources.length}{" "}
-                {uniqueResources.length === 1 ? "testimony" : "testimonies"}
-              </span>{" "}
-              in the{" "}
-              <span className="font-bold">
-                {filteredFootnotes.length}{" "}
-                {filteredFootnotes.length === 1 ? "citation" : "citations"}
-              </span>{" "}
-              listed below.
-            </p>
+            <div className="my-4">
+              <p>
+                This publication cites{" "}
+                <span className="font-bold">
+                  {uniqueResources.length}&nbsp;
+                  {uniqueResources.length === 1 ? "testimony" : "testimonies"}
+                </span>{" "}
+                in the{" "}
+                <span className="font-bold">
+                  {filteredFootnotes.length}&nbsp;
+                  {filteredFootnotes.length === 1 ? "citation" : "citations"}
+                </span>{" "}
+                listed below.
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="md:max-w-[350px]">
-          <div className="flex justify-center">
+          <div className="mx-2.5 flex w-fit flex-none justify-center">
             <BigNumber
               className="border-[#f48734]"
               label="citations"

@@ -16,7 +16,7 @@ export default function TopWrapper(props: {
     <div className="w-full bg-white px-2.5 py-10">
       <div className="relative mx-2.5 w-auto max-w-[1200px] md:mx-auto md:w-4/5">
         <BreadCrumb id={props.id} saveType={props.saveType} />
-        <section className="mt-3.5 flex flex-col gap-y-5 md:flex-row md:flex-wrap">
+        <section className="mt-3.5 flex flex-col gap-y-2 md:flex-row md:flex-wrap">
           {props.children}
         </section>
       </div>

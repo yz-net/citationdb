@@ -56,44 +56,53 @@ export default async function ResourcesPage({
   return (
     <div className="ResourcePage">
       <TopWrapper id={resourcesId} saveType="resource">
-        <div className="mx-5 md:mx-2.5 md:flex-[2_1]">
-          <h1 className="font-yalenewroman text-2xl">{resource.title}</h1>
-          <div className="mt-3 font-bold text-[#222]">{resource.id}</div>
-
-          <div className="view-button-container">
+        <div className="flex w-full flex-wrap items-start justify-center gap-x-2 gap-y-2">
+          <h1 className="font-yalenewroman mx-5 w-full text-2xl md:mx-2.5">
+            {resource.title}
+          </h1>
+          <div className="mx-5 flex-1 basis-full md:mx-2.5 lg:basis-0">
             <Link
-              className="hover:shadow-yale flex h-[30px] w-fit items-center justify-center rounded-lg bg-[#0d99aa] px-2.5 text-sm font-bold text-white"
+              className="group hover:shadow-yale shadow-yale/10 flex h-[30px] w-fit items-stretch overflow-hidden rounded-lg bg-white"
               href={getResourceLink(resource)}
               type="button"
             >
-              View
+              <div className="flex h-full w-[10px] items-center justify-center overflow-hidden bg-[#f9be00]/50 transition-[width,background-color] group-hover:w-[60px] group-hover:bg-[#f9be00]">
+                <span className="text-xs font-bold whitespace-nowrap text-white opacity-0 transition-opacity group-hover:opacity-100">
+                  View
+                </span>
+              </div>
+              <span className="flex items-center px-3 font-bold text-[#222]">
+                {resource.id}
+              </span>
             </Link>
-          </div>
 
-          <div className="my-4">
-            <p>
-              This testimony has been cited{" "}
-              <span className="font-bold">
-                {filteredFootnotes.length}{" "}
-                {filteredFootnotes.length === 1 ? "time" : "times"}
-              </span>{" "}
-              in the{" "}
-              <span className="font-bold">
-                {filteredPublications.length}{" "}
-                {filteredPublications.length === 1
-                  ? "publication"
-                  : "publications"}
-              </span>{" "}
-              listed below.
-            </p>
+            <div className="my-4">
+              <p>
+                This testimony has been cited{" "}
+                <span className="font-bold">
+                  {filteredFootnotes.length}&nbsp;
+                  {filteredFootnotes.length === 1 ? "time" : "times"}
+                </span>{" "}
+                in the{" "}
+                <span className="font-bold">
+                  {filteredPublications.length}&nbsp;
+                  {filteredPublications.length === 1
+                    ? "publication"
+                    : "publications"}
+                </span>{" "}
+                listed below.
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="grid justify-end gap-x-2 md:max-w-[560px] md:grid-cols-[260px_auto] md:items-center md:self-end">
-          <PublicationHistogram items={filteredPublications} />
-          <p className="text-center text-xs font-bold text-[#222]">
-            Publications by year
-          </p>
-          <div className="flex md:col-start-2 md:row-start-1">
+          {filteredPublications.length >= 2 && (
+            <figure className="mx-2.5 w-[260px] flex-none">
+              <PublicationHistogram items={filteredPublications} />
+              <figcaption className="text-center text-xs font-bold text-[#222]">
+                Publications by year
+              </figcaption>
+            </figure>
+          )}
+          <div className="mx-2.5 flex w-fit flex-none justify-center pt-8">
             <BigNumber
               className="border-[#f48734]"
               label={filteredFootnotes.length === 1 ? "citation" : "citations"}

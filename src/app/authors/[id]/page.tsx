@@ -59,9 +59,11 @@ export default async function AuthorsPage({
   return (
     <div className="PublicationPage">
       <TopWrapper id={author.id} saveType="author">
-        <div className="mx-5 md:mx-2.5 md:flex-[2_1]">
-          <div>
-            <h1 className="font-yalenewroman text-2xl">{author.name}</h1>
+        <div className="flex w-full flex-wrap items-start justify-center gap-x-2">
+          <h1 className="font-yalenewroman mx-5 w-full text-2xl md:mx-2.5">
+            {author.name}
+          </h1>
+          <div className="mx-5 flex-1 basis-full md:mx-2.5 lg:basis-0">
             {author.uri?.length > 0 && (
               <a
                 className="text-[#286dc0] no-underline hover:text-[#00356b]"
@@ -74,17 +76,17 @@ export default async function AuthorsPage({
               <p>
                 This author has made{" "}
                 <span className="font-bold">
-                  {filteredFootnotes.length}{" "}
+                  {filteredFootnotes.length}&nbsp;
                   {filteredFootnotes.length === 1 ? "citation" : "citations"}
                 </span>{" "}
                 to{" "}
                 <span className="font-bold">
-                  {uniqueResources.length}{" "}
+                  {uniqueResources.length}&nbsp;
                   {uniqueResources.length === 1 ? "testimony" : "testimonies"}
                 </span>{" "}
                 in the{" "}
                 <span className="font-bold">
-                  {filteredPublications.length}{" "}
+                  {filteredPublications.length}&nbsp;
                   {filteredPublications.length === 1
                     ? "publication"
                     : "publications"}
@@ -93,9 +95,7 @@ export default async function AuthorsPage({
               </p>
             </div>
           </div>
-        </div>
-        <div className="md:max-w-[350px]">
-          <div className="flex justify-center md:justify-end">
+          <div className="mx-2.5 flex w-fit flex-none justify-center">
             <BigNumber
               className="border-[#0d99aa]"
               label={
