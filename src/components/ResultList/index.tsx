@@ -1,8 +1,58 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+import { footnotes, publications } from "~/utils/data";
 
 import ResultListItem from "./ResultListItem";
+
+function getMostRecentYear(years: number[]) {
+  let max = 0;
+  for (const y of years) {
+    if (y > max) max = y;
+  }
+  return max;
+}
+
+function buildSortYearMap() {
+  const publicationYearById = new Map<string, number>();
+  const authorYears = new Map<string, number[]>();
+  for (const p of publications) {
+    const year = Number((p as any).date) || 0;
+    publicationYearById.set(p.id, year);
+    for (const aid of (p as any)["author.id"] ?? []) {
+      const arr = authorYears.get(aid) ?? [];
+      arr.push(year);
+      authorYears.set(aid, arr);
+    }
+  }
+  const resourceYears = new Map<string, number[]>();
+  for (const f of footnotes) {
+    const pid = (f as any)["publication.id"];
+    const rid = (f as any)["resource.id"];
+    const year = publicationYearById.get(pid) ?? 0;
+    const arr = resourceYears.get(rid) ?? [];
+    arr.push(year);
+    resourceYears.set(rid, arr);
+  }
+  return { publicationYearById, authorYears, resourceYears };
+}
+
+function sortYearFor(
+  item: any,
+  maps: ReturnType<typeof buildSortYearMap>,
+): number {
+  if (item.__type === "publication") {
+    return maps.publicationYearById.get(item.id) ?? 0;
+  }
+  if (item.__type === "author") {
+    return getMostRecentYear(maps.authorYears.get(item.id) ?? []);
+  }
+  if (item.__type === "resource") {
+    return getMostRecentYear(maps.resourceYears.get(item.id) ?? []);
+  }
+  return 0;
+}
 
 export default function ResultsList(props: any) {
   const [options, setOptions] = useState<{ itemCount: number; step: number }>({
@@ -34,8 +84,20 @@ export default function ResultsList(props: any) {
     setOptions((prev) => ({ ...prev, itemCount }));
   };
 
-  const items = props.items
-    .sort((a: any, b: any) => (a.__header > b.__header ? 1 : -1))
+  const sortMaps = useMemo(buildSortYearMap, []);
+  const hasPublications = props.items.some(
+    (x: any) => x.__type === "publication",
+  );
+
+  const items = [...props.items]
+    .sort((a: any, b: any) => {
+      if (hasPublications) {
+        const ya = sortYearFor(a, sortMaps);
+        const yb = sortYearFor(b, sortMaps);
+        if (ya !== yb) return yb - ya;
+      }
+      return a.__header > b.__header ? 1 : -1;
+    })
     .map((x: any, i: number) => (
       <ResultListItem key={i} item={x} type={x.__type} header={x.__header} />
     ))

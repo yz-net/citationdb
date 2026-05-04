@@ -98,10 +98,17 @@ function FootnoteFooter(props: any) {
   );
 }
 
+function sortPublicationsByYearThenTitle(a: any, b: any) {
+  const da = Number(a.date) || 0;
+  const db = Number(b.date) || 0;
+  if (da !== db) return db - da;
+  return (a.title ?? "") > (b.title ?? "") ? 1 : -1;
+}
+
 function AuthorFooter(props: any) {
-  const filteredPublications = publications.filter((p) =>
-    p["author.id"].some((a: any) => a === props.item.id),
-  );
+  const filteredPublications = publications
+    .filter((p) => p["author.id"].some((a: any) => a === props.item.id))
+    .sort(sortPublicationsByYearThenTitle);
   const filteredFootnotes = footnotes.filter((f) =>
     filteredPublications.some((p) => f["publication.id"] === p.id),
   );
@@ -137,9 +144,9 @@ function ResourceFooter(props: any) {
   const filteredFootnotes = footnotes
     .filter((f) => f["resource.id"] === props.item.id)
     .map((f) => f["publication.id"]);
-  const filteredPublications = publications.filter((p) =>
-    filteredFootnotes.some((f) => f === p.id),
-  );
+  const filteredPublications = publications
+    .filter((p) => filteredFootnotes.some((f) => f === p.id))
+    .sort(sortPublicationsByYearThenTitle);
 
   return (
     <div>
