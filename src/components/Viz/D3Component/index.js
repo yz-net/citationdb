@@ -43,6 +43,16 @@ export default class D3Component extends PureComponent {
   componentDidMount() {
     this.initializeChart();
     this.updateChart();
+
+    if (typeof ResizeObserver !== "undefined" && this.svg?.parentElement) {
+      this.resizeObserver = new ResizeObserver(() => this.redrawChart());
+      this.resizeObserver.observe(this.svg.parentElement);
+    }
+  }
+
+  componentWillUnmount() {
+    this.resizeObserver?.disconnect();
+    if (this.rafId) cancelAnimationFrame(this.rafId);
   }
 
   render() {
@@ -57,20 +67,17 @@ export default class D3Component extends PureComponent {
   }
 
   redrawChart() {
-    // prevent redraw if the width hasn't changed
-    const newWidth = window.document.body.getBoundingClientRect().width;
-    if (newWidth === this.state.currentWidth) {
-      return;
-    }
+    const newWidth = this.svg?.getBoundingClientRect().width ?? 0;
+    if (newWidth === this.state.currentWidth) return;
+    this.state.currentWidth = newWidth;
 
-    this.setState({ currentWidth: newWidth });
-
-    // only redraw at max once per second
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.initializeChart();
+    if (this.rafId) return;
+    this.rafId = requestAnimationFrame(() => {
+      this.rafId = null;
+      this.isResizing = true;
       this.updateChart();
-    }, 1000);
+      this.isResizing = false;
+    });
   }
 
   // Override this

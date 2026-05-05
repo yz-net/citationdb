@@ -97,14 +97,15 @@ export default class Histogram extends D3Component {
       .ticks(height / 20)
       .tickFormat((e) => (Math.floor(e) === e ? e : undefined));
 
-    const ty = d3.transition().duration(1000).ease(d3.easeQuadIn);
+    const dur = this.isResizing ? 0 : 1000;
+    const ty = d3.transition().duration(dur).ease(d3.easeQuadIn);
 
     this.yAxisG
       .attr("transform", `translate(${margin.left},${0})`)
       .transition(ty)
       .call(yAxis);
 
-    const t = (_i) => svg.transition().duration(1000).ease(d3.easeCubic);
+    const t = (_i) => svg.transition().duration(dur).ease(d3.easeCubic);
 
     this.barG
       .selectAll(".bar")
@@ -133,6 +134,7 @@ export default class Histogram extends D3Component {
             .attr("class", (d) => d.barClass)
             .classed("bar", true)
             .attr("x", (d) => xScale(d.label))
+            .attr("width", xScale.bandwidth)
             .call((update) =>
               update
                 .transition(t(1000))
@@ -157,7 +159,5 @@ export default class Histogram extends D3Component {
       .attr("x", width / 2)
       .attr("y", (height - margin.bottom + margin.top) / 2)
       .style("opacity", hasData ? 0 : 1);
-
-    d3.select(window).on("resize.histogram", this.redrawChart.bind(this));
   }
 }
