@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { footnotes, publications } from "~/utils/data";
 
@@ -69,20 +69,22 @@ export default function ResultsList(props: any) {
     setOptions((prev) => ({ ...prev, itemCount: prev.itemCount + prev.step }));
   }, []);
 
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const hasMore = props.items.length > options.itemCount;
+
   useEffect(() => {
-    const trackScrolling = () => {
-      const scrollBottom = window.scrollY + window.innerHeight;
-      const distanceFromBottom =
-        window.document.body.offsetHeight - scrollBottom;
-      if (props.items.length > options.itemCount && distanceFromBottom < 100) {
-        loadMore();
-      }
-    };
-    document.addEventListener("scroll", trackScrolling);
-    return () => {
-      document.removeEventListener("scroll", trackScrolling);
-    };
-  }, [options.itemCount, props.items.length, loadMore]);
+    if (!hasMore) return;
+    const node = sentinelRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) loadMore();
+      },
+      { rootMargin: "100px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [hasMore, loadMore]);
 
   const sortMaps = useMemo(() => buildSortYearMap(), []);
   const hasPublications = props.items.some(
@@ -103,5 +105,10 @@ export default function ResultsList(props: any) {
     ))
     .slice(0, options.itemCount);
 
-  return <div className="mt-[30px]">{items}</div>;
+  return (
+    <div className="mt-[30px]">
+      {items}
+      {hasMore ? <div ref={sentinelRef} /> : null}
+    </div>
+  );
 }

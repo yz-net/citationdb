@@ -57,8 +57,8 @@ export default function SaveButton(props: any) {
   return (
     <div
       className={twMerge(
-        "absolute -top-20 right-0 transition-[top] group-hover:top-0",
-        alreadySaved ? "top-0" : "",
+        "absolute top-0 right-0 -translate-y-full transition-transform duration-200 ease-out group-hover:translate-y-0",
+        alreadySaved ? "translate-y-0" : "",
         props.className?.wrapper,
       )}
     >

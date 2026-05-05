@@ -27,7 +27,7 @@ function PillTray(props: any) {
             key={i}
             href={item.link}
             type="button"
-            className="mx-1 mt-1 max-w-[100px] overflow-hidden rounded-sm border-l-[3px] border-l-gray-200 bg-[#f5f5f5] px-1 text-[11px] text-ellipsis whitespace-nowrap text-[#286dc0] transition-[border,max-width] group-hover:max-w-full hover:text-[#00356b]"
+            className="mx-1 mt-1 max-w-[100px] overflow-hidden rounded-sm border-l-[3px] border-l-gray-200 bg-[#f5f5f5] px-1 text-[11px] text-ellipsis whitespace-nowrap text-[#286dc0] transition-[border,max-width] delay-0 group-hover:max-w-full group-hover:delay-75 hover:text-[#00356b]"
           >
             {item.title}
           </Link>
@@ -242,7 +242,7 @@ export default function ResultListItem(props: any) {
   return (
     <div
       className={twMerge(
-        "group hover:shadow-yale relative mb-4 flex items-center overflow-hidden rounded-lg border-l-[10px] bg-white pr-4 transition-[border] hover:max-w-full hover:border-l-[20px]",
+        "group hover:shadow-yale relative mb-4 flex items-center overflow-hidden rounded-lg border-l-[10px] bg-white pr-4 transition-[border] delay-0 hover:max-w-full hover:border-l-[20px] hover:delay-75",
         props.type === "author"
           ? "border-l-[#ca6251]/50 hover:border-l-[#ca6251]"
           : "",
