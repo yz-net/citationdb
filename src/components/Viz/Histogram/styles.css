@@ -7,3 +7,11 @@ g.tick text {
   font-weight: 600;
   font-size: 12px;
 }
+
+g.axis.x g.tick text {
+  transition: opacity 120ms ease-out;
+}
+
+g.axis.x.hover-active g.tick text {
+  opacity: 0;
+}

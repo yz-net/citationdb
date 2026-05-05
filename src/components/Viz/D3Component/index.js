@@ -59,6 +59,7 @@ export default class D3Component extends PureComponent {
     return (
       <svg
         className="w-full"
+        style={{ overflow: "visible" }}
         ref={(el) => {
           this.svg = el;
         }}

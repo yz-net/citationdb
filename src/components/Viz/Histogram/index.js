@@ -20,6 +20,7 @@ export default class Histogram extends D3Component {
     this.xAxisG = svg.append("g").classed("axis", true).classed("x", true);
     this.yAxisG = svg.append("g").classed("axis", true).classed("y", true);
     this.barG = svg.append("g");
+    this.hoverG = svg.append("g").classed("hover-targets", true);
     this.noDataText = svg
       .append("text")
       .classed("no-data-text", true)
@@ -28,6 +29,34 @@ export default class Histogram extends D3Component {
       .style("fill", "#999")
       .style("opacity", 0)
       .text("No Data");
+
+    this.hoverXLabelG = svg
+      .append("g")
+      .classed("hover-x-label", true)
+      .style("display", "none")
+      .style("pointer-events", "none");
+    this.hoverXLabel = this.hoverXLabelG
+      .append("text")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "hanging")
+      .attr("font-size", 12)
+      .attr("font-weight", 600)
+      .style("font-variant-numeric", "tabular-nums")
+      .attr("fill", "#6e6e6e");
+
+    this.tooltipG = svg
+      .append("g")
+      .classed("histogram-tooltip", true)
+      .style("display", "none")
+      .style("pointer-events", "none");
+    this.tooltipText = this.tooltipG
+      .append("text")
+      .attr("fill", "#6e6e6e")
+      .attr("font-size", 12)
+      .attr("font-weight", 600)
+      .style("font-variant-numeric", "tabular-nums")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "alphabetic");
   }
 
   updateChart(data) {
@@ -89,6 +118,7 @@ export default class Histogram extends D3Component {
     const yScale = d3
       .scaleLinear()
       .domain(countRange)
+      .nice()
       .rangeRound([height - margin.bottom, margin.top]);
 
     const yAxis = d3
@@ -98,6 +128,12 @@ export default class Histogram extends D3Component {
       .tickFormat((e) => (Math.floor(e) === e ? e : undefined));
 
     const dur = this.isResizing ? 0 : 1000;
+    if (this.isResizing) {
+      this.hoverXLabelG?.interrupt().style("display", "none");
+      this.tooltipG?.interrupt().style("display", "none");
+      this.xAxisG?.classed("hover-active", false);
+      this.hoverActive = false;
+    }
     const ty = d3.transition().duration(dur).ease(d3.easeQuadIn);
 
     this.yAxisG
@@ -152,6 +188,81 @@ export default class Histogram extends D3Component {
                 .attr("y", () => yScale(0)),
             ),
       );
+
+    const step = xScale.step();
+    const bandwidth = xScale.bandwidth();
+    const MOVE = 140;
+    const ease = d3.easeCubicOut;
+
+    const dataByLabel = new Map((data ?? []).map((d) => [d.label, d]));
+    const firstYear = yearRange[0];
+
+    const positionFor = (d, animate) => {
+      const cx = xScale(d.label) + bandwidth / 2;
+      const barTop = yScale(d.count ?? 0);
+
+      this.hoverXLabel.text(d.label).attr("y", height - margin.bottom + 9);
+      this.tooltipText.text(`${d.count ?? 0}`);
+
+      const tooltipY = barTop - 6;
+
+      const xLabel = animate
+        ? this.hoverXLabel.transition().duration(MOVE).ease(ease)
+        : this.hoverXLabel.interrupt();
+      xLabel.attr("x", cx);
+
+      const tt = animate
+        ? this.tooltipText.transition().duration(MOVE).ease(ease)
+        : this.tooltipText.interrupt();
+      tt.attr("x", cx).attr("y", tooltipY);
+    };
+
+    const onMove = (event) => {
+      const [mx] = d3.pointer(event, this.svg);
+      const idx = Math.floor((mx - margin.left) / step);
+      const year = firstYear + idx;
+      const d = dataByLabel.get(year);
+      if (!d) {
+        if (this.hoverActive) {
+          this.hoverActive = false;
+          this.hoverXLabelG.style("display", "none");
+          this.tooltipG.style("display", "none");
+          this.xAxisG.classed("hover-active", false);
+        }
+        return;
+      }
+      if (!this.hoverActive) {
+        this.hoverActive = true;
+        this.hoverXLabelG.style("display", null);
+        this.tooltipG.style("display", null);
+        this.xAxisG.classed("hover-active", true);
+        positionFor(d, false);
+      } else {
+        positionFor(d, true);
+      }
+    };
+    const onLeave = () => {
+      this.hoverActive = false;
+      this.hoverXLabelG.interrupt().style("display", "none");
+      this.tooltipG.interrupt().style("display", "none");
+      this.xAxisG.classed("hover-active", false);
+    };
+
+    this.hoverG
+      .selectAll(".hover-overlay")
+      .data([null])
+      .join("rect")
+      .attr("class", "hover-overlay")
+      .attr("x", margin.left)
+      .attr("y", margin.top)
+      .attr("width", Math.max(0, width - margin.left - margin.right))
+      .attr("height", Math.max(0, height - margin.top - margin.bottom))
+      .attr("fill", "transparent")
+      .on("mousemove", onMove)
+      .on("mouseleave", onLeave);
+
+    this.hoverXLabelG.raise();
+    this.tooltipG.raise();
 
     // show/hide "No Data" text based on whether data is present
     const hasData = data && data.length > 0;
