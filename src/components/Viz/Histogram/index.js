@@ -196,6 +196,8 @@ export default class Histogram extends D3Component {
 
     const dataByLabel = new Map((data ?? []).map((d) => [d.label, d]));
     const firstYear = yearRange[0];
+    const slotPad = (step - bandwidth) / 2;
+    const firstSlotLeft = xScale(firstYear) - slotPad;
 
     const positionFor = (d, animate) => {
       const cx = xScale(d.label) + bandwidth / 2;
@@ -219,7 +221,7 @@ export default class Histogram extends D3Component {
 
     const onMove = (event) => {
       const [mx] = d3.pointer(event, this.svg);
-      const idx = Math.floor((mx - margin.left) / step);
+      const idx = Math.floor((mx - firstSlotLeft) / step);
       const year = firstYear + idx;
       const d = dataByLabel.get(year);
       if (!d) {
